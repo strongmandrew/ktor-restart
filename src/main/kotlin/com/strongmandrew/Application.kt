@@ -1,11 +1,10 @@
 package com.strongmandrew
 
-import com.strongmandrew.controller.createController
-import com.strongmandrew.plugins.*
+import com.strongmandrew.plugins.configureRouting
+import com.strongmandrew.plugins.configureSerialization
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.routing.*
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)

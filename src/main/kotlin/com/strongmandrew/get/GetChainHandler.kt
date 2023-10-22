@@ -1,21 +1,22 @@
 package com.strongmandrew.get
 
+import com.strongmandrew.executor.FunctionExecutor
+import com.strongmandrew.executor.FunctionExecutorImpl
 import com.strongmandrew.handler.ChainHandler
+import com.strongmandrew.validator.Validator
 import io.ktor.server.application.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.util.reflect.*
 import kotlin.reflect.KFunction
-import kotlin.reflect.full.callSuspend
 import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.hasAnnotation
 
 class GetChainHandler<T : Any>(
     override val nextHandler: ChainHandler<T>? = null,
+    override val validator: Validator = GetValidator(),
+    override val functionExecutor: FunctionExecutor<T> = FunctionExecutorImpl(),
 ) : ChainHandler<T>() {
 
     override fun satisfies(route: Route, func: KFunction<*>): Boolean {
-        return func.hasAnnotation<Get>()
+        return validator.isValid(func)
     }
 
     override fun handle(route: Route, instance: T, func: KFunction<*>) {
@@ -24,12 +25,7 @@ class GetChainHandler<T : Any>(
 
             val path = annotation.path.ifBlank { func.name }
             get(path) {
-                val invokeResult = func.callSuspend(instance)
-
-                call.respond(
-                    invokeResult,
-                    TypeInfo(type = func.returnType::class, reifiedType = func.returnType.platformType)
-                )
+                functionExecutor.execute(call, instance, func)
             }
         }
     }
