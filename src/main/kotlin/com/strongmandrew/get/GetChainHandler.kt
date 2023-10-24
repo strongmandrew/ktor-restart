@@ -9,17 +9,17 @@ import io.ktor.server.routing.*
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.findAnnotation
 
-class GetChainHandler<T : Any>(
-    override val nextHandler: ChainHandler<T>? = null,
+class GetChainHandler(
+    override val nextHandler: ChainHandler? = null,
     override val validator: Validator = GetValidator(),
-    override val functionExecutor: FunctionExecutor<T> = FunctionExecutorImpl(),
-) : ChainHandler<T>() {
+    override val functionExecutor: FunctionExecutor = FunctionExecutorImpl(),
+) : ChainHandler() {
 
     override fun satisfies(route: Route, func: KFunction<*>): Boolean {
         return validator.isValid(func)
     }
 
-    override fun handle(route: Route, instance: T, func: KFunction<*>) {
+    override fun handle(route: Route, instance: Any, func: KFunction<*>) {
         with(route) {
             val annotation = func.findAnnotation<Get>() ?: error("")
 

@@ -7,9 +7,9 @@ import kotlinx.serialization.serializerOrNull
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.callSuspend
 
-class FunctionExecutorImpl<T : Any> : FunctionExecutor<T> {
+class FunctionExecutorImpl : FunctionExecutor {
 
-    override suspend fun execute(call: ApplicationCall, instance: T, func: KFunction<*>) {
+    override suspend fun execute(call: ApplicationCall, instance: Any, func: KFunction<*>) {
         val executeResult = func.callSuspend(instance)
 
         val serializer = serializerOrNull(func.returnType)
