@@ -24,7 +24,7 @@ class GetValidator : Validator {
             .flatMap(KParameter::annotations)
             .forEach { annotation ->
                 if (annotation.annotationClass in GET_FORBIDDEN_PARAMETER_ANNOTATIONS) {
-                    logger.error("Annotation GET cannot have parameter annotated ${annotation.annotationClass}")
+                    logger.error("Method with annotation \"GET\" cannot have parameter annotated ${annotation.annotationClass}")
                     return false
                 }
             }

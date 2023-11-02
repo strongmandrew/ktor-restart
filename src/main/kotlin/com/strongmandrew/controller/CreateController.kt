@@ -1,17 +1,23 @@
 package com.strongmandrew.controller
 
-import com.strongmandrew.config.chainHandler
-import com.strongmandrew.handler.ChainHandler
-import io.ktor.server.routing.*
+import com.strongmandrew.config.ControllerScope
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.declaredMemberFunctions
 
-inline fun <reified T : Any> Route.createController() {
+inline fun <reified T : Any> ControllerScope.createController(
+    path: String = "",
+    childControllersScope: ControllerScope.() -> Unit = {}
+): ControllerScope {
     val instance = T::class.createInstance()
 
-    val chain: ChainHandler = chainHandler
+    val controllerWithParent = apply {
+        completePath.append("/$path")
+        childControllersScope.invoke(this)
+    }
 
     T::class.declaredMemberFunctions.forEach { func ->
-        chain.onReceive(this, instance, func)
+        chainHandler.onReceive(controllerWithParent, instance, func)
     }
+
+    return controllerWithParent
 }

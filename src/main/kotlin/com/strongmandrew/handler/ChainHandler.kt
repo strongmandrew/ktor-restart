@@ -1,8 +1,9 @@
 package com.strongmandrew.handler
 
+import com.strongmandrew.config.ControllerScope
 import com.strongmandrew.executor.FunctionExecutor
+import com.strongmandrew.path.PathResolver
 import com.strongmandrew.validator.Validator
-import io.ktor.server.routing.*
 import kotlin.reflect.KFunction
 
 abstract class ChainHandler {
@@ -10,17 +11,18 @@ abstract class ChainHandler {
     abstract val nextHandler: ChainHandler?
     abstract val validator: Validator
     abstract val functionExecutor: FunctionExecutor
+    abstract val pathResolver: PathResolver
 
-    fun onReceive(route: Route, instance: Any, func: KFunction<*>) {
-        when (satisfies(route, func)) {
-            true -> handle(route, instance, func)
-            false -> proceed(route, instance, func)
+    fun onReceive(controllerScope: ControllerScope, instance: Any, func: KFunction<*>) {
+        when (satisfies(func)) {
+            true -> handle(controllerScope, instance, func)
+            false -> proceed(controllerScope, instance, func)
         }
     }
 
-    abstract fun satisfies(route: Route, func: KFunction<*>): Boolean
+    abstract fun satisfies(func: KFunction<*>): Boolean
 
-    abstract fun handle(route: Route, instance: Any, func: KFunction<*>)
+    abstract fun handle(controllerScope: ControllerScope, instance: Any, func: KFunction<*>)
 
-    private fun proceed(route: Route, instance: Any, func: KFunction<*>) = nextHandler?.onReceive(route, instance, func)
+    private fun proceed(controllerScope: ControllerScope, instance: Any, func: KFunction<*>) = nextHandler?.onReceive(controllerScope, instance, func)
 }
