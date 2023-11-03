@@ -2,7 +2,6 @@ package nestedControllerScope
 
 import BaseApplicationTest
 import com.strongmandrew.config.rootController
-import com.strongmandrew.controller.createController
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import nestedControllerScope.controller.ApiController
@@ -30,11 +29,9 @@ class NestedControllerScopeTest : BaseApplicationTest() {
         applicationTestBuilder: suspend ApplicationTestBuilder.() -> Unit = {}
     ) = testApplication {
         application {
-            rootController(path = firstScopeLevel) {
-
-                createController<ApiController> {
-
-                    createController<NestedTestController>(path = secondScopeLevel)
+            rootController {
+                createController<ApiController>(firstScopeLevel) {
+                    createController<NestedTestController>(secondScopeLevel)
                 }
             }
         }
