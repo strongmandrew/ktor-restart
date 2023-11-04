@@ -14,7 +14,7 @@ class NestedControllerScopeTest : BaseApplicationTest() {
     fun getLibraryTestName() = testApplicationWithNestedControllers {
         val completeRoute = getCompleteRouteByPath(firstScopeLevel, secondScopeLevel, thirdScopeLevel)
 
-        executePlainGet(completeRoute).assertOKAndBodyEquals(
+        executePlainGet(completeRoute).assertOkAndBodyEquals(
             expectedBody = libraryName
         )
     }
@@ -23,7 +23,7 @@ class NestedControllerScopeTest : BaseApplicationTest() {
     fun getByNotOverriddenPath() = testApplicationWithNestedControllers {
         val completeRoute = getCompleteRouteByPath(firstScopeLevel, secondScopeLevel)
 
-        executePlainGet(completeRoute).assertOKAndBodyEquals(
+        executePlainGet(completeRoute).assertOkAndBodyEquals(
             expectedBody = testName
         )
     }

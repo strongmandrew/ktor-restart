@@ -2,8 +2,12 @@ package com.strongmandrew.encoder
 
 import com.strongmandrew.config.ControllerScope
 import com.strongmandrew.executor.ExecutedFunction
+import com.strongmandrew.response.ResponseEntity
 import io.ktor.server.application.*
-import kotlinx.serialization.serializerOrNull
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.serializer
+import kotlin.reflect.full.isSubtypeOf
+import kotlin.reflect.typeOf
 
 class StringResponseEncoder : ResponseEncoder<String> {
 
@@ -11,18 +15,36 @@ class StringResponseEncoder : ResponseEncoder<String> {
         controllerScope: ControllerScope,
         executedFunction: ExecutedFunction,
         call: ApplicationCall,
-    ): String {
+    ): EncodedResponse<String> {
         val functionReturnType = executedFunction.func.returnType
 
-        val serializer = serializerOrNull(functionReturnType)
+        val encoder = controllerScope.responseEncoder.provide()
 
-        return serializer?.let {
-            val encoder = controllerScope.responseEncoder.provide()
+        return when {
+            functionReturnType.isSubtypeOf(typeOf<ResponseEntity<*>>()) -> {
+                val responseEntity = executedFunction.executedResult as ResponseEntity<Any>
 
-            encoder.encodeToString(
-                serializer = it,
-                value = executedFunction.executedResult
-            )
-        } ?: "Serializer not found for ${functionReturnType::class.qualifiedName}"
+                val encodedValue = encoder.encodeToString(
+                    serializer = responseEntity.getEntitySerializer(),
+                    value = responseEntity.getEntity()
+                )
+
+                EncodedResponse(
+                    value = encodedValue,
+                    statusCode = responseEntity.getStatusCode(),
+                    contentType = responseEntity.getContentType()
+                )
+            }
+            else -> {
+                val encodedValue = encoder.encodeToString(
+                    serializer = serializer(functionReturnType) as KSerializer<Any>,
+                    value = executedFunction.executedResult as Any
+                )
+
+                return EncodedResponse(
+                    value = encodedValue
+                )
+            }
+        }
     }
 }

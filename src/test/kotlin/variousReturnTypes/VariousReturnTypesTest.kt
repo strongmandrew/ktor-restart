@@ -11,56 +11,56 @@ class VariousReturnTypesTest : BaseApplicationTest() {
 
     @Test
     fun returnString() = testApplicationWithVariousReturnTypesControllers {
-        executePlainGet(stringPath).assertOKAndBodyEquals(
+        executePlainGet(stringPath).assertOkAndBodyEquals(
             expectedBody = stringValue
         )
     }
 
     @Test
     fun returnLong() = testApplicationWithVariousReturnTypesControllers {
-        executePlainGet(longPath).assertOKAndBodyEquals(
+        executePlainGet(longPath).assertOkAndBodyEquals(
             expectedBody = longValue
         )
     }
 
     @Test
     fun returnBoolean() = testApplicationWithVariousReturnTypesControllers {
-        executePlainGet(booleanPath).assertOKAndBodyEquals(
+        executePlainGet(booleanPath).assertOkAndBodyEquals(
             expectedBody = booleanValue
         )
     }
 
     @Test
     fun returnChar() = testApplicationWithVariousReturnTypesControllers {
-        executePlainGet(charPath).assertOKAndBodyEquals(
+        executePlainGet(charPath).assertOkAndBodyEquals(
             expectedBody = charValue
         )
     }
 
     @Test
     fun returnInt() = testApplicationWithVariousReturnTypesControllers {
-        executePlainGet(intPath).assertOKAndBodyEquals(
+        executePlainGet(intPath).assertOkAndBodyEquals(
             expectedBody = intValue
         )
     }
 
     @Test
     fun returnList() = testApplicationWithVariousReturnTypesControllers {
-        executePlainGet(listPath).assertOKAndBodyEquals(
+        executePlainGet(listPath).assertOkAndBodyEquals(
             expectedBody = listOfStrings
         )
     }
 
     @Test
     fun returnMap() = testApplicationWithVariousReturnTypesControllers {
-        executePlainGet(mapPath).assertOKAndBodyEquals(
+        executePlainGet(mapPath).assertOkAndBodyEquals(
             expectedBody = mapOfStringAndInt
         )
     }
 
     @Test
     fun returnUserEntity() = testApplicationWithVariousReturnTypesControllers {
-        executePlainGet(userEntityPath).assertOKAndBodyEquals(
+        executePlainGet(userEntityPath).assertOkAndBodyEquals(
             expectedBody = userEntity
         )
     }

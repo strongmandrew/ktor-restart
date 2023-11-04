@@ -10,5 +10,5 @@ interface ResponseEncoder<T : Any> {
         controllerScope: ControllerScope,
         executedFunction: ExecutedFunction,
         call: ApplicationCall,
-    ): T
+    ): EncodedResponse<T>
 }

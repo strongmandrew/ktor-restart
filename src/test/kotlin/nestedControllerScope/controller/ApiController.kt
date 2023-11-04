@@ -1,4 +1,3 @@
 package nestedControllerScope.controller
 
-class ApiController {
-}
+class ApiController

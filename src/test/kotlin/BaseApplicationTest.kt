@@ -14,19 +14,26 @@ open class BaseApplicationTest {
         return Pair(response.status, response.bodyAsText())
     }
 
-    protected inline fun <reified T> Pair<HttpStatusCode, String>.assertOKAndBodyEquals(expectedBody: T) {
+    protected inline fun <reified T> Pair<HttpStatusCode, String>.assertStatusAndBodyEquals(
+        statusCode: HttpStatusCode,
+        expectedBody: T
+    ) {
         val decodedBody = jsonProvider.provide().decodeFromString<T>(
             string = second
         )
 
         assertEquals(
-            expected = HttpStatusCode.OK, actual = first
+            expected = statusCode, actual = first
         )
 
         assertEquals(
             expected = expectedBody, actual = decodedBody
         )
     }
+
+    protected inline fun <reified T> Pair<HttpStatusCode, String>.assertOkAndBodyEquals(expectedBody: T) =
+        assertStatusAndBodyEquals(HttpStatusCode.OK, expectedBody)
+
 
     protected fun getCompleteRouteByPath(vararg path: String): String = path.joinToString("/")
 }
