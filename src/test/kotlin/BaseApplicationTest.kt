@@ -3,9 +3,6 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.serializer
-import kotlin.reflect.full.createType
 import kotlin.test.assertEquals
 
 open class BaseApplicationTest {
@@ -17,9 +14,9 @@ open class BaseApplicationTest {
         return Pair(response.status, response.bodyAsText())
     }
 
-    protected inline fun <reified T : Any> Pair<HttpStatusCode, String>.assertOKAndBodyEquals(expectedBody: T) {
-        val encodedExpectedBody = jsonProvider.provide().encodeToString(
-            serializer = expectedBody.createSerializer(), value = expectedBody
+    protected inline fun <reified T> Pair<HttpStatusCode, String>.assertOKAndBodyEquals(expectedBody: T) {
+        val decodedBody = jsonProvider.provide().decodeFromString<T>(
+            string = second
         )
 
         assertEquals(
@@ -27,13 +24,9 @@ open class BaseApplicationTest {
         )
 
         assertEquals(
-            expected = encodedExpectedBody, actual = second
+            expected = expectedBody, actual = decodedBody
         )
     }
 
     protected fun getCompleteRouteByPath(vararg path: String): String = path.joinToString("/")
-
-    protected inline fun <reified T : Any> T.createSerializer(): KSerializer<T> {
-        return serializer(this::class.createType()) as KSerializer<T>
-    }
 }

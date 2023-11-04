@@ -5,7 +5,6 @@ import com.strongmandrew.config.rootController
 import io.ktor.server.testing.*
 import variousReturnTypes.controller.VariousTypeReturnsController
 import variousReturnTypes.utils.*
-import kotlin.test.Ignore
 import kotlin.test.Test
 
 class VariousReturnTypesTest : BaseApplicationTest() {
@@ -46,10 +45,16 @@ class VariousReturnTypesTest : BaseApplicationTest() {
     }
 
     @Test
-    @Ignore
     fun returnList() = testApplicationWithVariousReturnTypesControllers {
         executePlainGet(listPath).assertOKAndBodyEquals(
             expectedBody = listOfStrings
+        )
+    }
+
+    @Test
+    fun returnMap() = testApplicationWithVariousReturnTypesControllers {
+        executePlainGet(mapPath).assertOKAndBodyEquals(
+            expectedBody = mapOfStringAndInt
         )
     }
 

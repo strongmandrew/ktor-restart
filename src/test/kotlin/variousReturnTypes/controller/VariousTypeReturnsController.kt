@@ -23,6 +23,9 @@ class VariousTypeReturnsController {
     @Get(listPath)
     fun returnList(): List<String> = listOfStrings
 
+    @Get(mapPath)
+    fun returnMap(): Map<String, Int> = mapOfStringAndInt
+
     @Get(userEntityPath)
     fun returnUserEntity(): UserEntity = userEntity
 }
