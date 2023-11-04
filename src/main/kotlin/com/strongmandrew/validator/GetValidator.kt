@@ -1,7 +1,7 @@
-package com.strongmandrew.get
+package com.strongmandrew.validator
 
 import com.strongmandrew.logger.getLogger
-import com.strongmandrew.validator.Validator
+import com.strongmandrew.method.Get
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter

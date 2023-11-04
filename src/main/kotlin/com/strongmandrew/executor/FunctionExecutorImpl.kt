@@ -1,26 +1,21 @@
 package com.strongmandrew.executor
 
 import io.ktor.server.application.*
-import io.ktor.server.response.*
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.serializerOrNull
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.callSuspend
 
 class FunctionExecutorImpl : FunctionExecutor {
 
-    override suspend fun execute(call: ApplicationCall, instance: Any, func: KFunction<*>) {
+    override suspend fun execute(
+        call: ApplicationCall,
+        instance: Any,
+        func: KFunction<*>,
+    ): ExecutedFunction {
         val executeResult = func.callSuspend(instance)
 
-        val serializer = serializerOrNull(func.returnType)
-
-        serializer?.let {
-            val body = Json.encodeToString(
-                serializer = it,
-                value = executeResult
-            )
-
-            call.respond(body)
-        }
+        return ExecutedFunction(
+            func = func,
+            executedResult = executeResult
+        )
     }
 }

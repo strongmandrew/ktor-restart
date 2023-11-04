@@ -1,4 +1,4 @@
-package com.strongmandrew.get
+package com.strongmandrew.method
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)

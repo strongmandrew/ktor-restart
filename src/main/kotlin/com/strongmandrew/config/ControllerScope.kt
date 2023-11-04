@@ -1,10 +1,13 @@
 package com.strongmandrew.config
 
-import com.strongmandrew.get.GetRouteHandler
-import com.strongmandrew.get.GetValidator
+import com.strongmandrew.encoder.DefaultJsonProvider
+import com.strongmandrew.encoder.JsonProvider
+import com.strongmandrew.handler.DefaultGetRouteHandler
+import com.strongmandrew.validator.GetValidator
 import com.strongmandrew.handler.RouteHandler
 import com.strongmandrew.validator.Validator
 import io.ktor.server.application.*
+import kotlinx.serialization.json.Json
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.declaredMemberFunctions
@@ -12,15 +15,17 @@ import kotlin.reflect.full.declaredMemberFunctions
 class ControllerScope(
     val application: Application,
 ) {
-    private val handlers = mutableMapOf<Validator, RouteHandler>(
-        GetValidator() to GetRouteHandler()
+    private val handlers: MutableMap<Validator, RouteHandler<*>> = mutableMapOf(
+        GetValidator() to DefaultGetRouteHandler()
     )
 
     val completePath: StringBuilder = StringBuilder("/")
 
+    val responseEncoder: JsonProvider = DefaultJsonProvider()
+
     inline fun <reified T : Any> ControllerScope.createController(
         path: String = "",
-        childControllersScope: ControllerScope.() -> Unit = {}
+        childControllersScope: ControllerScope.() -> Unit = {},
     ): ControllerScope {
         val instance = T::class.createInstance()
 
@@ -38,16 +43,13 @@ class ControllerScope(
         return controllerWithParent
     }
 
-    fun findHandler(func: KFunction<*>): RouteHandler? = handlers.entries.reversed()
+    fun findHandler(func: KFunction<*>): RouteHandler<*>? = handlers.entries.reversed()
         .find { mutableEntry -> mutableEntry.key.isValid(func) }
         ?.value
 
     fun addCustomHandler(
-        validatorWithHandler: () -> Pair<Validator, RouteHandler>
+        validatorWithHandler: () -> Map<Validator, RouteHandler<*>>,
     ) {
-        handlers.run {
-            val invokedValidatorWithHandler = validatorWithHandler.invoke()
-            put(invokedValidatorWithHandler.first, invokedValidatorWithHandler.second)
-        }
+        handlers.putAll(validatorWithHandler.invoke())
     }
 }
