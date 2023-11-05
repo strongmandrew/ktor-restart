@@ -3,11 +3,10 @@ package com.strongmandrew.config
 import com.strongmandrew.encoder.DefaultJsonProvider
 import com.strongmandrew.encoder.JsonProvider
 import com.strongmandrew.handler.DefaultGetRouteHandler
-import com.strongmandrew.validator.GetValidator
 import com.strongmandrew.handler.RouteHandler
+import com.strongmandrew.validator.GetValidator
 import com.strongmandrew.validator.Validator
 import io.ktor.server.application.*
-import kotlinx.serialization.json.Json
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.declaredMemberFunctions
@@ -16,7 +15,7 @@ class ControllerScope(
     val application: Application,
 ) {
     private val handlers: MutableMap<Validator, RouteHandler<*>> = mutableMapOf(
-        GetValidator() to DefaultGetRouteHandler()
+        GetValidator() to DefaultGetRouteHandler(this)
     )
 
     val completePath: StringBuilder = StringBuilder("/")
@@ -48,8 +47,8 @@ class ControllerScope(
         ?.value
 
     fun addCustomHandler(
-        validatorWithHandler: () -> Map<Validator, RouteHandler<*>>,
+        validatorWithHandler: ControllerScope.() -> Map<Validator, RouteHandler<*>>,
     ) {
-        handlers.putAll(validatorWithHandler.invoke())
+        handlers.putAll(validatorWithHandler.invoke(this))
     }
 }

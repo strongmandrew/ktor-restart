@@ -9,10 +9,21 @@ open class BaseApplicationTest {
 
     protected val jsonProvider = DefaultJsonProvider()
 
-    protected suspend fun ApplicationTestBuilder.executePlainGet(route: String): Pair<HttpStatusCode, String> {
-        val response = client.get(route)
-        return Pair(response.status, response.bodyAsText())
+    protected suspend fun ApplicationTestBuilder.executeGetWithQueryParams(
+        route: String,
+        params: Map<String, Any>,
+    ): Pair<HttpStatusCode, String> {
+        val response = client.get(route) {
+            params.forEach { (key, value) ->
+                parameter(key, value)
+            }
+        }
+
+        return response.status to response.bodyAsText()
     }
+
+    protected suspend fun ApplicationTestBuilder.executePlainGet(route: String): Pair<HttpStatusCode, String> =
+        executeGetWithQueryParams(route, emptyMap())
 
     protected inline fun <reified T> Pair<HttpStatusCode, String>.assertStatusAndBodyEquals(
         statusCode: HttpStatusCode,

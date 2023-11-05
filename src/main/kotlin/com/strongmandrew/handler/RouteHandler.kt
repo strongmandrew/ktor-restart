@@ -8,9 +8,7 @@ import kotlin.reflect.KFunction
 
 interface RouteHandler<T : Any> {
 
-    val functionExecutor: FunctionExecutor
-    val responseEncoder: ResponseEncoder<T>
-    val responseSender: ResponseSender<T>
+    val controllerScope: ControllerScope
 
     fun handle(controllerScope: ControllerScope, instance: Any, func: KFunction<*>)
 }
