@@ -1,7 +1,7 @@
 package queryParameters.controller
 
 import com.strongmandrew.method.Get
-import com.strongmandrew.parameter.QueryParam
+import com.strongmandrew.query.QueryParam
 import queryParameters.utils.*
 
 class QueryParamController {
@@ -15,4 +15,11 @@ class QueryParamController {
     fun getDefaultName(
         @QueryParam(simpleDefaultVsQueryParamKey) age: Int = simpleDefaultVsQueryParamDefault
     ): Int = age
+
+    @Get(mediumQueryParamPath)
+    fun getNamesByOrder(
+        @QueryParam(mediumQueryParamFirstKey) firstName: String,
+        @QueryParam(mediumQueryParamSecondKey) secondName: String = mediumQueryParamSecondDefault,
+        @QueryParam(mediumQueryParamThirdKey) thirdName: String,
+    ): String = joinNames(firstName, secondName, thirdName)
 }

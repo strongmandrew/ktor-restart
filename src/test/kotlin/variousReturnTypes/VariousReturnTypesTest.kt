@@ -2,10 +2,12 @@ package variousReturnTypes
 
 import BaseApplicationTest
 import com.strongmandrew.config.rootController
+import com.strongmandrew.executor.NullableReturnTypeException
 import io.ktor.server.testing.*
 import variousReturnTypes.controller.VariousTypeReturnsController
 import variousReturnTypes.utils.*
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class VariousReturnTypesTest : BaseApplicationTest() {
 
@@ -63,6 +65,13 @@ class VariousReturnTypesTest : BaseApplicationTest() {
         executePlainGet(userEntityPath).assertOkAndBodyEquals(
             expectedBody = userEntity
         )
+    }
+
+    @Test
+    fun returnNull() = testApplicationWithVariousReturnTypesControllers {
+        assertFailsWith(NullableReturnTypeException::class) {
+            executePlainGet(nullablePath).assertOkAndBodyEquals(nullable)
+        }
     }
 
     private fun testApplicationWithVariousReturnTypesControllers(

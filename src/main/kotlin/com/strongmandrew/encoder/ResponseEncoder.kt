@@ -9,6 +9,5 @@ interface ResponseEncoder<T : Any> {
     fun encode(
         controllerScope: ControllerScope,
         executedFunction: ExecutedFunction,
-        call: ApplicationCall,
     ): EncodedResponse<T>
 }

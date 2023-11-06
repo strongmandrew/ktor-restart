@@ -34,3 +34,7 @@ val userEntity = UserEntity(
     smokes = true
 )
 const val userEntityPath = "userEntityPath"
+
+/* Corner cases */
+val nullable: UserEntity? = null
+const val nullablePath = "nullablePath"

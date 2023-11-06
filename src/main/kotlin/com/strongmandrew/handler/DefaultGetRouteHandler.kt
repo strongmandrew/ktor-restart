@@ -35,7 +35,6 @@ class DefaultGetRouteHandler(
                     val encodedResponse = responseEncoder.encode(
                         controllerScope = controllerScope,
                         executedFunction = executedFunction,
-                        call = call
                     )
 
                     responseSender.send(call, encodedResponse)

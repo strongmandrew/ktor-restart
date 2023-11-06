@@ -1,4 +1,4 @@
-package com.strongmandrew.parameter
+package com.strongmandrew.query
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)

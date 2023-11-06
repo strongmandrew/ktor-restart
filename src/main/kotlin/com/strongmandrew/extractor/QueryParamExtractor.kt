@@ -1,4 +1,4 @@
-package com.strongmandrew.query
+package com.strongmandrew.extractor
 
 import com.strongmandrew.config.ControllerScope
 import io.ktor.server.application.*

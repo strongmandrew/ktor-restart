@@ -28,4 +28,7 @@ class VariousTypeReturnsController {
 
     @Get(userEntityPath)
     fun returnUserEntity(): UserEntity = userEntity
+
+    @Get(nullablePath)
+    fun returnNull(): UserEntity? = nullable
 }

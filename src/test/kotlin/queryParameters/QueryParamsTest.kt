@@ -5,7 +5,6 @@ import com.strongmandrew.config.rootController
 import io.ktor.server.testing.*
 import queryParameters.controller.QueryParamController
 import queryParameters.utils.*
-import kotlin.test.Ignore
 import kotlin.test.Test
 
 class QueryParamsTest : BaseApplicationTest() {
@@ -29,6 +28,35 @@ class QueryParamsTest : BaseApplicationTest() {
             route = simpleDefaultVsQueryParamPath,
             params = mapOf(simpleDefaultVsQueryParamKey to simpleDefaultVsQueryParamValue)
         ).assertOkAndBodyEquals(simpleDefaultVsQueryParamValue)
+    }
+
+    @Test
+    fun getQueryParamsMixedWithDefault() = testApplicationWithQueryParamController {
+        executeGetWithQueryParams(
+            route = mediumQueryParamPath,
+            params = mapOf(
+                mediumQueryParamFirstKey to mediumQueryParamFirstValue,
+                mediumQueryParamThirdKey to mediumQueryParamThirdValue
+            )
+        ).assertOkAndBodyEquals(
+            joinNames(mediumQueryParamFirstValue, mediumQueryParamSecondDefault, mediumQueryParamThirdValue)
+        )
+    }
+
+    @Test
+    fun getQueryParamsMixedWithDefaultOverriddenByQuery() = testApplicationWithQueryParamController {
+        val overriddenDefaultInQuery = "Sam"
+
+        executeGetWithQueryParams(
+            route = mediumQueryParamPath,
+            params = mapOf(
+                mediumQueryParamFirstKey to mediumQueryParamFirstValue,
+                mediumQueryParamSecondKey to overriddenDefaultInQuery,
+                mediumQueryParamThirdKey to mediumQueryParamThirdValue
+            )
+        ).assertOkAndBodyEquals(
+            joinNames(mediumQueryParamFirstValue, overriddenDefaultInQuery, mediumQueryParamThirdValue)
+        )
     }
 
     private fun testApplicationWithQueryParamController(

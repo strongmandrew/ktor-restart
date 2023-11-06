@@ -14,11 +14,10 @@ class StringResponseEncoder : ResponseEncoder<String> {
     override fun encode(
         controllerScope: ControllerScope,
         executedFunction: ExecutedFunction,
-        call: ApplicationCall,
     ): EncodedResponse<String> {
         val functionReturnType = executedFunction.func.returnType
 
-        val encoder = controllerScope.responseEncoder.provide()
+        val encoder = controllerScope.encoder.provide()
 
         return when {
             functionReturnType.isSubtypeOf(typeOf<ResponseEntity<*>>()) -> {
