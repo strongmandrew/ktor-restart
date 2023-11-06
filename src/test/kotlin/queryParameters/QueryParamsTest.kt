@@ -2,10 +2,13 @@ package queryParameters
 
 import BaseApplicationTest
 import com.strongmandrew.config.rootController
+import com.strongmandrew.encoder.FailedToDecodeException
+import com.strongmandrew.extractor.CallElementNotFoundException
 import io.ktor.server.testing.*
 import queryParameters.controller.QueryParamController
 import queryParameters.utils.*
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class QueryParamsTest : BaseApplicationTest() {
 
@@ -57,6 +60,39 @@ class QueryParamsTest : BaseApplicationTest() {
         ).assertOkAndBodyEquals(
             joinNames(mediumQueryParamFirstValue, overriddenDefaultInQuery, mediumQueryParamThirdValue)
         )
+    }
+
+    @Test
+    fun getQueryParamNotFound() = testApplicationWithQueryParamController {
+        assertFailsWith(CallElementNotFoundException::class) {
+            executeGetWithQueryParams(
+                route = mediumQueryParamPath,
+                params = mapOf(mediumQueryParamFirstKey to mediumQueryParamFirstValue)
+            )
+        }
+    }
+
+    @Test
+    fun getQueryParamSerializable() = testApplicationWithQueryParamController {
+        val encodedEntity = jsonProvider.provide().encodeToString(
+            serializer = QueryEntitySerializable.serializer(),
+            value = serializableQueryValue
+        )
+
+        executeGetWithQueryParams(
+            route = serializableQueryPath,
+            params = mapOf(serializableQueryKey to encodedEntity)
+        ).assertOkAndBodyEquals(serializableQueryValue)
+    }
+
+    @Test
+    fun getQueryParamNotSerializable() = testApplicationWithQueryParamController {
+        assertFailsWith(FailedToDecodeException::class) {
+            executeGetWithQueryParams(
+                route = notSerializableQueryPath,
+                params = mapOf(notSerializableQueryKey to notSserializableQueryValue)
+            )
+        }
     }
 
     private fun testApplicationWithQueryParamController(

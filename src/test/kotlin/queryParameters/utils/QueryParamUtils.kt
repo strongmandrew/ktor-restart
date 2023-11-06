@@ -18,3 +18,11 @@ const val mediumQueryParamSecondDefault = "Amy"
 const val mediumQueryParamThirdValue = "Dough"
 
 fun joinNames(vararg name: String): String = name.joinToString("/")
+
+const val serializableQueryPath = "serializableQuery"
+const val serializableQueryKey = "serialized"
+val serializableQueryValue = QueryEntitySerializable.TEST
+
+const val notSerializableQueryPath = "notSerializablePath"
+const val notSerializableQueryKey = "notSerialized"
+val notSserializableQueryValue = QueryEntityNotSerializable.TEST

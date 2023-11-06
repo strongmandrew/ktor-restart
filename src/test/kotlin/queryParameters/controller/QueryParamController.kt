@@ -22,4 +22,14 @@ class QueryParamController {
         @QueryParam(mediumQueryParamSecondKey) secondName: String = mediumQueryParamSecondDefault,
         @QueryParam(mediumQueryParamThirdKey) thirdName: String,
     ): String = joinNames(firstName, secondName, thirdName)
+
+    @Get(serializableQueryPath)
+    fun getSerializedEntityFromQuery(
+        @QueryParam(serializableQueryKey) query: QueryEntitySerializable
+    ): QueryEntitySerializable = query
+
+    @Get(notSerializableQueryPath)
+    fun getNotSerializableEntity(
+        @QueryParam(notSerializableQueryKey) query: QueryEntityNotSerializable
+    ): QueryEntityNotSerializable = query
 }
