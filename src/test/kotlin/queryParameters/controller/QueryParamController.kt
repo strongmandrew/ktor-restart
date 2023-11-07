@@ -32,4 +32,9 @@ class QueryParamController {
     fun getNotSerializableEntity(
         @QueryParam(notSerializableQueryKey) query: QueryEntityNotSerializable
     ): QueryEntityNotSerializable = query
+
+    @Get(nullableQueryPath)
+    fun getNullableQuery(
+        @QueryParam(nullableQueryKey) name: String?
+    ): String = name ?: nullableReturnString
 }

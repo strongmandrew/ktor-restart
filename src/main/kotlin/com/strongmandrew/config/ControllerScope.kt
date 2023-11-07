@@ -3,8 +3,8 @@ package com.strongmandrew.config
 import com.strongmandrew.encoder.DefaultJsonProvider
 import com.strongmandrew.encoder.FailedToDecodeException
 import com.strongmandrew.encoder.JsonProvider
-import com.strongmandrew.extractor.DefaultQueryParamElementExtractor
-import com.strongmandrew.extractor.ElementExtractor
+import com.strongmandrew.extractor.DefaultQueryParamCallElementExtractor
+import com.strongmandrew.extractor.CallElementExtractor
 import com.strongmandrew.handler.DefaultGetRouteHandler
 import com.strongmandrew.handler.RouteHandler
 import com.strongmandrew.validator.GetValidator
@@ -24,8 +24,8 @@ class ControllerScope(
         GetValidator() to DefaultGetRouteHandler(this)
     )
 
-    private val extractors: MutableSet<ElementExtractor> = mutableSetOf(
-        DefaultQueryParamElementExtractor(this)
+    private val extractors: MutableSet<CallElementExtractor> = mutableSetOf(
+        DefaultQueryParamCallElementExtractor(this)
     )
 
     val completePath: StringBuilder = StringBuilder("/")
@@ -56,7 +56,7 @@ class ControllerScope(
         .find { mutableEntry -> mutableEntry.key.isValid(func) }
         ?.value
 
-    fun findExtractor(parameter: KParameter): ElementExtractor? = extractors.reversed()
+    fun findExtractor(parameter: KParameter): CallElementExtractor? = extractors.reversed()
         .find { extractor -> extractor.satisfies(parameter) }
 
     fun addCustomHandler(
@@ -65,7 +65,7 @@ class ControllerScope(
         handlers.putAll(validatorWithHandler.invoke(this))
     }
 
-    fun addCustomExtractor(extractorBlock: ControllerScope.() -> ElementExtractor) {
+    fun addCustomExtractor(extractorBlock: ControllerScope.() -> CallElementExtractor) {
         extractors.add(extractorBlock.invoke(this))
     }
 

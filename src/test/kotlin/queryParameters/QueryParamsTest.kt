@@ -7,6 +7,7 @@ import com.strongmandrew.extractor.CallElementNotFoundException
 import io.ktor.server.testing.*
 import queryParameters.controller.QueryParamController
 import queryParameters.utils.*
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
@@ -90,9 +91,15 @@ class QueryParamsTest : BaseApplicationTest() {
         assertFailsWith(FailedToDecodeException::class) {
             executeGetWithQueryParams(
                 route = notSerializableQueryPath,
-                params = mapOf(notSerializableQueryKey to notSserializableQueryValue)
+                params = mapOf(notSerializableQueryKey to notSerializableQueryValue)
             )
         }
+    }
+
+    @Test
+    @Ignore("Need to handle both nullable & default arguments")
+    fun getIfNullableQueryNotProvided() = testApplicationWithQueryParamController {
+        executePlainGet(nullableQueryPath).assertOkAndBodyEquals(nullableReturnString)
     }
 
     private fun testApplicationWithQueryParamController(

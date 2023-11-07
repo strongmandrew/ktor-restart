@@ -3,7 +3,7 @@ package com.strongmandrew.extractor
 import io.ktor.server.application.*
 import kotlin.reflect.KParameter
 
-interface ElementExtractor {
+interface CallElementExtractor {
 
     fun satisfies(param: KParameter): Boolean
 

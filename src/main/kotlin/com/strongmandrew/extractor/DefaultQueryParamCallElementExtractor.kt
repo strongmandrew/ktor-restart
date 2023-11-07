@@ -7,9 +7,9 @@ import kotlin.reflect.KParameter
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.hasAnnotation
 
-class DefaultQueryParamElementExtractor(
+class DefaultQueryParamCallElementExtractor(
     private val controllerScope: ControllerScope
-) : ElementExtractor {
+) : CallElementExtractor {
 
     override fun satisfies(param: KParameter): Boolean = param.hasAnnotation<QueryParam>()
 
