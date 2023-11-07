@@ -18,7 +18,7 @@ class DefaultQueryParamCallElementExtractor(
             "Only value parameters of function can be provided with query params"
         }
 
-        /* guaranteed that invoked after hasAnnotation returns true */
+        /* guaranteed that invoked after satisfies returns true */
         val queryParam = param.findAnnotation<QueryParam>()!!
 
         val parameterName = queryParam.key

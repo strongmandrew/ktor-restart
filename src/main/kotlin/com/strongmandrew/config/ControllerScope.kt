@@ -3,12 +3,10 @@ package com.strongmandrew.config
 import com.strongmandrew.encoder.DefaultJsonProvider
 import com.strongmandrew.encoder.FailedToDecodeException
 import com.strongmandrew.encoder.JsonProvider
-import com.strongmandrew.extractor.DefaultQueryParamCallElementExtractor
 import com.strongmandrew.extractor.CallElementExtractor
+import com.strongmandrew.extractor.DefaultQueryParamCallElementExtractor
 import com.strongmandrew.handler.DefaultGetRouteHandler
 import com.strongmandrew.handler.RouteHandler
-import com.strongmandrew.validator.GetValidator
-import com.strongmandrew.validator.Validator
 import io.ktor.server.application.*
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.serializer
@@ -20,8 +18,8 @@ import kotlin.reflect.full.declaredMemberFunctions
 class ControllerScope(
     val application: Application,
 ) {
-    private val handlers: MutableMap<Validator, RouteHandler<*>> = mutableMapOf(
-        GetValidator() to DefaultGetRouteHandler(this)
+    private val handlers: MutableSet<RouteHandler<*>> = mutableSetOf(
+        DefaultGetRouteHandler(this)
     )
 
     private val extractors: MutableSet<CallElementExtractor> = mutableSetOf(
@@ -52,17 +50,16 @@ class ControllerScope(
         return controllerWithParent
     }
 
-    fun findHandler(func: KFunction<*>): RouteHandler<*>? = handlers.entries.reversed()
-        .find { mutableEntry -> mutableEntry.key.isValid(func) }
-        ?.value
+    fun findHandler(func: KFunction<*>): RouteHandler<*>? = handlers.reversed()
+        .find { mutableEntry -> mutableEntry.satisfies(func) }
 
     fun findExtractor(parameter: KParameter): CallElementExtractor? = extractors.reversed()
         .find { extractor -> extractor.satisfies(parameter) }
 
     fun addCustomHandler(
-        validatorWithHandler: ControllerScope.() -> Map<Validator, RouteHandler<*>>,
+        validatorWithHandler: ControllerScope.() -> RouteHandler<*>,
     ) {
-        handlers.putAll(validatorWithHandler.invoke(this))
+        handlers.add(validatorWithHandler.invoke(this))
     }
 
     fun addCustomExtractor(extractorBlock: ControllerScope.() -> CallElementExtractor) {
