@@ -1,4 +1,4 @@
-package com.strongmandrew.executor
+package com.strongmandrew.executor.exception
 
 class NullableReturnTypeException(override val message: String?) : RuntimeException() {
 

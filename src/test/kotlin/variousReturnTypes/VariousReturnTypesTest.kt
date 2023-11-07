@@ -2,7 +2,7 @@ package variousReturnTypes
 
 import BaseApplicationTest
 import com.strongmandrew.config.rootController
-import com.strongmandrew.executor.NullableReturnTypeException
+import com.strongmandrew.executor.exception.NullableReturnTypeException
 import io.ktor.server.testing.*
 import variousReturnTypes.controller.VariousTypeReturnsController
 import variousReturnTypes.utils.*

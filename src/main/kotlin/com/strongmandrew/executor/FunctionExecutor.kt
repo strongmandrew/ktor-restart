@@ -1,6 +1,6 @@
 package com.strongmandrew.executor
 
-import com.strongmandrew.extractor.QueryParamExtractor
+import com.strongmandrew.executor.entity.ExecutedFunction
 import io.ktor.server.application.*
 import kotlin.reflect.KFunction
 

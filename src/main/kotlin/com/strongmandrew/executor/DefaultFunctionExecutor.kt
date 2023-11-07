@@ -1,6 +1,9 @@
 package com.strongmandrew.executor
 
 import com.strongmandrew.config.ControllerScope
+import com.strongmandrew.executor.entity.ExecutedFunction
+import com.strongmandrew.executor.exception.NullableReturnTypeException
+import com.strongmandrew.executor.extension.toCallableArgs
 import io.ktor.server.application.*
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
@@ -24,12 +27,9 @@ class DefaultFunctionExecutor(
 
         val args = when {
             parametersWithoutInstance.isNotEmpty() -> {
-                /* TODO("Extend for cookie, path, etc extraction") */
                 parametersWithoutInstance.mapNotNull { param ->
-                    controllerScope.findExtractor(param)?.extract(param, call)?.let {
-                        param to it
-                    }
-                }.toMap()
+                    controllerScope.findExtractor(param)?.extract(param, call)
+                }.toCallableArgs()
             }
 
             else -> emptyMap()

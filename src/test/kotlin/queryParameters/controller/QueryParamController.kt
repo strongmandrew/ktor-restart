@@ -37,4 +37,9 @@ class QueryParamController {
     fun getNullableQuery(
         @QueryParam(nullableQueryKey) name: String?
     ): String = name ?: nullableReturnString
+
+    @Get(nullableDefaultQueryPath)
+    fun getNullableDefaultQuery(
+        @QueryParam(nullableDefaultQueryKey) amount: Int? = null
+    ): Int = amount ?: nullableDefaultReturnValue
 }

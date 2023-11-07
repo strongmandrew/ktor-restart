@@ -1,8 +1,7 @@
 package com.strongmandrew.encoder
 
 import com.strongmandrew.config.ControllerScope
-import com.strongmandrew.executor.ExecutedFunction
-import io.ktor.server.application.*
+import com.strongmandrew.executor.entity.ExecutedFunction
 
 interface ResponseEncoder<T : Any> {
 

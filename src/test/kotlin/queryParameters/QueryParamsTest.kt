@@ -3,11 +3,10 @@ package queryParameters
 import BaseApplicationTest
 import com.strongmandrew.config.rootController
 import com.strongmandrew.encoder.FailedToDecodeException
-import com.strongmandrew.extractor.CallElementNotFoundException
+import com.strongmandrew.extractor.exception.CallElementNotFoundException
 import io.ktor.server.testing.*
 import queryParameters.controller.QueryParamController
 import queryParameters.utils.*
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
@@ -97,9 +96,33 @@ class QueryParamsTest : BaseApplicationTest() {
     }
 
     @Test
-    @Ignore("Need to handle both nullable & default arguments")
     fun getIfNullableQueryNotProvided() = testApplicationWithQueryParamController {
         executePlainGet(nullableQueryPath).assertOkAndBodyEquals(nullableReturnString)
+    }
+
+    @Test
+    fun getIfNullableQueryProvided() = testApplicationWithQueryParamController {
+        val testQuery = "providedString"
+
+        executeGetWithQueryParams(
+            route = nullableQueryPath,
+            params = mapOf(nullableQueryKey to testQuery)
+        ).assertOkAndBodyEquals(testQuery)
+    }
+
+    @Test
+    fun getIfNullableQueryNotProvidedWithDefaultSet() = testApplicationWithQueryParamController {
+        executePlainGet(nullableDefaultQueryPath).assertOkAndBodyEquals(nullableDefaultReturnValue)
+    }
+
+    @Test
+    fun getIfNullableQueryProvidedWithDefaultSet() = testApplicationWithQueryParamController {
+        val testQuery = 11
+
+        executeGetWithQueryParams(
+            route = nullableDefaultQueryPath,
+            params = mapOf(nullableDefaultQueryKey to testQuery)
+        ).assertOkAndBodyEquals(testQuery)
     }
 
     private fun testApplicationWithQueryParamController(

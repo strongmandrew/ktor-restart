@@ -1,9 +1,8 @@
 package com.strongmandrew.encoder
 
 import com.strongmandrew.config.ControllerScope
-import com.strongmandrew.executor.ExecutedFunction
+import com.strongmandrew.executor.entity.ExecutedFunction
 import com.strongmandrew.response.ResponseEntity
-import io.ktor.server.application.*
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
 import kotlin.reflect.full.isSubtypeOf

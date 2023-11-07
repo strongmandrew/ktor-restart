@@ -27,6 +27,10 @@ const val notSerializableQueryPath = "notSerializablePath"
 const val notSerializableQueryKey = "notSerialized"
 val notSerializableQueryValue = QueryEntityNotSerializable.TEST
 
-const val nullableQueryPath = "nullableQuery"
+const val nullableQueryPath = "nullablePath"
 const val nullableQueryKey = "nullableKey"
 const val nullableReturnString = "value is null"
+
+const val nullableDefaultQueryPath = "nullableDefaultPath"
+const val nullableDefaultQueryKey = "nullableDefaultKey"
+const val nullableDefaultReturnValue = 88

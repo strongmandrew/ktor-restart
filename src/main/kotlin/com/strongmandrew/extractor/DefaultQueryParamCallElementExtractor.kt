@@ -1,6 +1,7 @@
 package com.strongmandrew.extractor
 
 import com.strongmandrew.config.ControllerScope
+import com.strongmandrew.extractor.entity.ExtractedCallElement
 import com.strongmandrew.query.QueryParam
 import io.ktor.server.application.*
 import kotlin.reflect.KParameter
@@ -13,7 +14,7 @@ class DefaultQueryParamCallElementExtractor(
 
     override fun satisfies(param: KParameter): Boolean = param.hasAnnotation<QueryParam>()
 
-    override fun extract(param: KParameter, call: ApplicationCall): Any? {
+    override fun extract(param: KParameter, call: ApplicationCall): ExtractedCallElement {
         check(param.kind == KParameter.Kind.VALUE) {
             "Only value parameters of function can be provided with query params"
         }
@@ -24,15 +25,10 @@ class DefaultQueryParamCallElementExtractor(
         val parameterName = queryParam.key
         val obtainedQuery = call.request.queryParameters[parameterName]
 
-        if (obtainedQuery == null && !param.isOptional) {
-            CallElementNotFoundException.withMessage("Query param not found by name ${param.name}")
-        }
-
-        return obtainedQuery?.let {
-            controllerScope.decodeKParameter(
-                parameter = param,
-                value = it
-            )
-        }
+        return ExtractedCallElement(
+            controllerScope = controllerScope,
+            param = param,
+            extractedValue = obtainedQuery
+        )
     }
 }

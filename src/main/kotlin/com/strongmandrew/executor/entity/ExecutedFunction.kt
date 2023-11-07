@@ -1,4 +1,4 @@
-package com.strongmandrew.executor
+package com.strongmandrew.executor.entity
 
 import kotlin.reflect.KFunction
 
