@@ -4,6 +4,7 @@ import com.strongmandrew.encoder.DefaultJsonProvider
 import com.strongmandrew.encoder.FailedToDecodeException
 import com.strongmandrew.encoder.JsonProvider
 import com.strongmandrew.extractor.CallElementExtractor
+import com.strongmandrew.extractor.DefaultHeaderExtractor
 import com.strongmandrew.extractor.DefaultQueryParamExtractor
 import com.strongmandrew.handler.DefaultGetRouteHandler
 import com.strongmandrew.handler.RouteHandler
@@ -23,7 +24,8 @@ class ControllerScope(
     )
 
     private val extractors: MutableSet<CallElementExtractor> = mutableSetOf(
-        DefaultQueryParamExtractor(this)
+        DefaultQueryParamExtractor(this),
+        DefaultHeaderExtractor(this),
     )
 
     val completePath: StringBuilder = StringBuilder("/")
