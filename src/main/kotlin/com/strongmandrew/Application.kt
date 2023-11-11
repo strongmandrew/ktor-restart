@@ -1,6 +1,7 @@
 package com.strongmandrew
 
-import com.strongmandrew.plugins.*
+import com.strongmandrew.plugins.configureRouting
+import com.strongmandrew.plugins.configureSerialization
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
