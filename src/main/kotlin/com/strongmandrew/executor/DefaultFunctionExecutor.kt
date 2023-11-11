@@ -28,7 +28,7 @@ class DefaultFunctionExecutor(
         val args = when {
             parametersWithoutInstance.isNotEmpty() -> {
                 parametersWithoutInstance.mapNotNull { param ->
-                    controllerScope.findExtractor(param)?.extract(param, call)
+                    controllerScope.findExtractor(param)?.wrapCallElement(param, call)
                 }.toCallableArgs()
             }
 

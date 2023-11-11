@@ -4,7 +4,7 @@ import com.strongmandrew.encoder.DefaultJsonProvider
 import com.strongmandrew.encoder.FailedToDecodeException
 import com.strongmandrew.encoder.JsonProvider
 import com.strongmandrew.extractor.CallElementExtractor
-import com.strongmandrew.extractor.DefaultQueryParamCallElementExtractor
+import com.strongmandrew.extractor.DefaultQueryParamExtractor
 import com.strongmandrew.handler.DefaultGetRouteHandler
 import com.strongmandrew.handler.RouteHandler
 import io.ktor.server.application.*
@@ -23,7 +23,7 @@ class ControllerScope(
     )
 
     private val extractors: MutableSet<CallElementExtractor> = mutableSetOf(
-        DefaultQueryParamCallElementExtractor(this)
+        DefaultQueryParamExtractor(this)
     )
 
     val completePath: StringBuilder = StringBuilder("/")
