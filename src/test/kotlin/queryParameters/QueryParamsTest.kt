@@ -74,7 +74,7 @@ class QueryParamsTest : BaseApplicationTest() {
 
     @Test
     fun getQueryParamSerializable() = testApplicationWithQueryParamController {
-        val encodedEntity = jsonProvider.provide().encodeToString(
+        val encodedEntity = encodeToString(
             serializer = QueryEntitySerializable.serializer(),
             value = serializableQueryValue
         )
