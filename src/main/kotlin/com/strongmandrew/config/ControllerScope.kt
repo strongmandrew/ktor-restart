@@ -1,9 +1,10 @@
 package com.strongmandrew.config
 
-import com.strongmandrew.encoder.DefaultJsonProvider
-import com.strongmandrew.encoder.FailedToDecodeException
-import com.strongmandrew.encoder.JsonProvider
+import com.strongmandrew.encoder.json.DefaultJsonProvider
+import com.strongmandrew.encoder.exception.FailedToDecodeException
+import com.strongmandrew.encoder.json.JsonProvider
 import com.strongmandrew.extractor.CallElementExtractor
+import com.strongmandrew.extractor.DefaultApplicationCallExtractor
 import com.strongmandrew.extractor.DefaultHeaderExtractor
 import com.strongmandrew.extractor.DefaultQueryParamExtractor
 import com.strongmandrew.handler.DefaultGetRouteHandler
@@ -24,6 +25,7 @@ class ControllerScope(
     )
 
     private val extractors: MutableSet<CallElementExtractor> = mutableSetOf(
+        DefaultApplicationCallExtractor(this),
         DefaultQueryParamExtractor(this),
         DefaultHeaderExtractor(this),
     )
@@ -68,15 +70,14 @@ class ControllerScope(
         extractors.add(extractorBlock.invoke(this))
     }
 
-    fun decodeKParameter(parameter: KParameter, value: String): Any? = try {
+    fun decodeKParameter(parameter: KParameter, value: Any): Any? = try {
         val serializer = serializer(parameter.type)
 
         encoder.provide().decodeFromString(
             deserializer = serializer,
-            string = value
+            string = value.toString()
         )
     } catch (e: SerializationException) {
-        FailedToDecodeException
-            .withCauseMessage(e, "Failed to decode $value into ${parameter.name} with type ${parameter.type}")
+        throw FailedToDecodeException("Failed to decode $value into ${parameter.name} with type ${parameter.type}", e)
     }
 }

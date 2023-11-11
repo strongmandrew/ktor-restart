@@ -11,7 +11,7 @@ abstract class CallElementExtractor(
 
     abstract fun satisfies(param: KParameter): Boolean
 
-    fun wrapCallElement(param: KParameter, call: ApplicationCall): ExtractedCallElement {
+    open fun wrapCallElement(param: KParameter, call: ApplicationCall): ExtractedCallElement {
         check(param.kind == KParameter.Kind.VALUE) {
             "Only value parameters of function can be interpreted by ${this::class.qualifiedName}"
         }
@@ -25,5 +25,5 @@ abstract class CallElementExtractor(
         )
     }
 
-    abstract fun extractValue(param: KParameter, call: ApplicationCall): String?
+    abstract fun extractValue(param: KParameter, call: ApplicationCall): Any?
 }

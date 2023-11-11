@@ -1,4 +1,4 @@
-package com.strongmandrew.encoder
+package com.strongmandrew.encoder.entity
 
 import io.ktor.http.*
 

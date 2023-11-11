@@ -1,4 +1,4 @@
-package com.strongmandrew.encoder
+package com.strongmandrew.encoder.json
 
 import kotlinx.serialization.json.Json
 

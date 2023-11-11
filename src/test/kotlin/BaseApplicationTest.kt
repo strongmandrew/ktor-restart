@@ -1,4 +1,4 @@
-import com.strongmandrew.encoder.DefaultJsonProvider
+import com.strongmandrew.encoder.json.DefaultJsonProvider
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -61,6 +61,9 @@ open class BaseApplicationTest {
     protected inline fun <reified T> Pair<HttpStatusCode, String>.assertOkAndBodyEquals(expectedBody: T) =
         assertStatusAndBodyEquals(HttpStatusCode.OK, expectedBody)
 
+    protected fun Pair<HttpStatusCode, String>.assertStatus(
+        statusCode: HttpStatusCode
+    ) = assertEquals(expected = statusCode, first)
 
     protected fun getCompleteRouteByPath(vararg path: String): String = path.joinToString("/")
 
