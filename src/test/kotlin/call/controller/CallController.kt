@@ -1,5 +1,7 @@
-package call
+package call.controller
 
+import call.utils.CustomApplicationCallSubtype
+import call.utils.customCallPath
 import call.utils.incorrectTypeCallPath
 import call.utils.simpleCallPath
 import com.strongmandrew.call.Call
@@ -17,4 +19,9 @@ class CallController {
     fun getCallOfIncorrectType(
         @Call call: String,
     ): String = call
+
+    @Get(customCallPath)
+    fun getCallOfCustomSubtype(
+        @Call call: CustomApplicationCallSubtype
+    ) {}
 }

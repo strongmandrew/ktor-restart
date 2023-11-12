@@ -1,6 +1,8 @@
 package call
 
 import BaseApplicationTest
+import call.controller.CallController
+import call.utils.customCallPath
 import call.utils.incorrectTypeCallPath
 import call.utils.simpleCallPath
 import com.strongmandrew.config.rootController
@@ -21,6 +23,13 @@ class CallTest : BaseApplicationTest() {
     fun getCallFailedDueToTypeMismatch() = testApplicationWithCallController {
         assertFailsWith(TypeMismatchException::class) {
             executeGet(incorrectTypeCallPath)
+        }
+    }
+
+    @Test
+    fun getCallOfCustomSubtype() = testApplicationWithCallController {
+        assertFailsWith(TypeMismatchException::class) {
+            executeGet(customCallPath)
         }
     }
 

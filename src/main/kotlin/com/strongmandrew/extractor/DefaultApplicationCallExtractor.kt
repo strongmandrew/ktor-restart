@@ -7,7 +7,6 @@ import com.strongmandrew.extractor.exception.TypeMismatchException
 import io.ktor.server.application.*
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.hasAnnotation
-import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.typeOf
 
 class DefaultApplicationCallExtractor(
@@ -18,13 +17,11 @@ class DefaultApplicationCallExtractor(
         param.hasAnnotation<Call>()
 
     override fun wrapCallElement(param: KParameter, call: ApplicationCall): ExtractedCallElement {
-        val paramIsApplicationCallSubtype = param.type.isSubtypeOf(
-            typeOf<ApplicationCall>()
-        )
+        val paramOfApplicationCallType = param.type == typeOf<ApplicationCall>()
 
-        if (!paramIsApplicationCallSubtype) {
+        if (!paramOfApplicationCallType) {
             throw TypeMismatchException(
-                "Value parameter annotated with ${Call::class.qualifiedName} must be subtype of ${ApplicationCall::class.qualifiedName}"
+                "Value parameter annotated with ${Call::class.qualifiedName} must be of type ${ApplicationCall::class.qualifiedName}"
             )
         }
 
