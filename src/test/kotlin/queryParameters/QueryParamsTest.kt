@@ -2,7 +2,7 @@ package queryParameters
 
 import BaseApplicationTest
 import com.strongmandrew.config.rootController
-import com.strongmandrew.encoder.FailedToDecodeException
+import com.strongmandrew.encoder.exception.FailedToDecodeException
 import com.strongmandrew.extractor.exception.CallElementNotFoundException
 import io.ktor.server.testing.*
 import queryParameters.controller.QueryParamController

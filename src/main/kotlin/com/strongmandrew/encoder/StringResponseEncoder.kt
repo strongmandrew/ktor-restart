@@ -1,6 +1,7 @@
 package com.strongmandrew.encoder
 
 import com.strongmandrew.config.ControllerScope
+import com.strongmandrew.encoder.entity.EncodedResponse
 import com.strongmandrew.executor.entity.ExecutedFunction
 import com.strongmandrew.response.ResponseEntity
 import kotlinx.serialization.KSerializer

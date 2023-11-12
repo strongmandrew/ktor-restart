@@ -1,6 +1,6 @@
 package com.strongmandrew.sender
 
-import com.strongmandrew.encoder.EncodedResponse
+import com.strongmandrew.encoder.entity.EncodedResponse
 import io.ktor.server.application.*
 
 interface ResponseSender<T> {
