@@ -1,21 +1,22 @@
 package com.strongmandrew.extractor
 
 import com.strongmandrew.config.ControllerScope
-import com.strongmandrew.query.QueryParam
+import com.strongmandrew.cookie.Cookie
+import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.util.*
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.hasAnnotation
 
-class DefaultQueryParamExtractor(
+class DefaultCookieExtractor(
     controllerScope: ControllerScope
 ) : CallElementExtractor(controllerScope) {
 
-    override fun satisfies(param: KParameter): Boolean = param.hasAnnotation<QueryParam>()
+    override fun satisfies(param: KParameter): Boolean = param.hasAnnotation<Cookie>()
 
     override fun extractValue(param: KParameter, call: ApplicationCall): String? {
-        val annotation = param.findAnnotation<QueryParam>()!!
-
-        return call.request.queryParameters[annotation.key]
+        val annotation = param.findAnnotation<Cookie>()!!
+        return call.request.cookies[annotation.key]
     }
 }

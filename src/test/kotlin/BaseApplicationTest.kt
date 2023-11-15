@@ -41,6 +41,15 @@ open class BaseApplicationTest {
         }
     }
 
+    protected suspend fun ApplicationTestBuilder.executeGetWithCookies(
+        route: String,
+        cookies: Map<String, String>
+    ): Pair<HttpStatusCode, String> = executeGet(route) {
+        cookies.forEach { (key, value) ->
+            cookie(key, value)
+        }
+    }
+
     protected inline fun <reified T> Pair<HttpStatusCode, String>.assertStatusAndBodyEquals(
         statusCode: HttpStatusCode,
         expectedBody: T

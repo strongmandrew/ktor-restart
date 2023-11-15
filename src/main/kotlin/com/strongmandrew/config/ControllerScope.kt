@@ -3,10 +3,7 @@ package com.strongmandrew.config
 import com.strongmandrew.encoder.json.DefaultJsonProvider
 import com.strongmandrew.encoder.exception.FailedToDecodeException
 import com.strongmandrew.encoder.json.JsonProvider
-import com.strongmandrew.extractor.CallElementExtractor
-import com.strongmandrew.extractor.DefaultApplicationCallExtractor
-import com.strongmandrew.extractor.DefaultHeaderExtractor
-import com.strongmandrew.extractor.DefaultQueryParamExtractor
+import com.strongmandrew.extractor.*
 import com.strongmandrew.handler.DefaultGetRouteHandler
 import com.strongmandrew.handler.RouteHandler
 import io.ktor.server.application.*
@@ -28,6 +25,7 @@ class ControllerScope(
         DefaultApplicationCallExtractor(this),
         DefaultQueryParamExtractor(this),
         DefaultHeaderExtractor(this),
+        DefaultCookieExtractor(this),
     )
 
     val completePath: StringBuilder = StringBuilder("/")
