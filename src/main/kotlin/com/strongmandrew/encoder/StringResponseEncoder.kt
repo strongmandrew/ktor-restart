@@ -17,7 +17,7 @@ class StringResponseEncoder : ResponseEncoder<String> {
     ): EncodedResponse<String> {
         val functionReturnType = executedFunction.func.returnType
 
-        val encoder = controllerScope.encoder.provide()
+        val encoder = controllerScope.provideJson()
 
         return when {
             functionReturnType.isSubtypeOf(typeOf<ResponseEntity<*>>()) -> {
