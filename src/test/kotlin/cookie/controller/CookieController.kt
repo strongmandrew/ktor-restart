@@ -15,4 +15,14 @@ class CookieController {
     fun getSerializedCookie(
         @Cookie(serializedCookieKey) type: SerializedCustomCookieType
     ): SerializedCustomCookieType = type
+
+    @Get(defaultProvidedCookiePath)
+    fun getDefaultProvidedCookie(
+        @Cookie(defaultProvidedCookieKey) cookie: Map<String, Int> = defaultProvidedCookieValue
+    ): Map<String, Int> = cookie
+
+    @Get(nullableCookiePath)
+    fun getNullableCookie(
+        @Cookie(nullableCookieKey) cookie: Int?
+    ): Int = cookie ?: alternativeCookieValue
 }

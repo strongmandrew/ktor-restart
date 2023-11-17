@@ -2,10 +2,14 @@ package cookie
 
 import BaseApplicationTest
 import com.strongmandrew.config.rootController
+import com.strongmandrew.encoder.exception.FailedToDecodeException
 import cookie.controller.CookieController
 import cookie.utils.*
 import io.ktor.server.testing.*
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class CookieTest : BaseApplicationTest() {
 
@@ -31,7 +35,17 @@ class CookieTest : BaseApplicationTest() {
             cookies = mapOf(
                 serializedCookieKey to serializedValue
             )
-        ).assertOkAndBodyEquals(serializedValue)
+        ).assertOkAndBodyEquals(serializedCookieValue)
+    }
+
+    @Test
+    fun getDefaultProvidedCookie() = testApplicationWithCookieController {
+        executeGet(defaultProvidedCookiePath).assertOkAndBodyEquals(defaultProvidedCookieValue)
+    }
+
+    @Test
+    fun getNullableCookie() = testApplicationWithCookieController {
+        executeGet(nullableCookiePath).assertOkAndBodyEquals(alternativeCookieValue)
     }
 
     private fun testApplicationWithCookieController(
