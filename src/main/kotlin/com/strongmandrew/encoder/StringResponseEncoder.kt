@@ -6,7 +6,9 @@ import com.strongmandrew.executor.entity.ExecutedFunction
 import com.strongmandrew.response.ResponseEntity
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
+import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSubtypeOf
+import kotlin.reflect.full.starProjectedType
 import kotlin.reflect.typeOf
 
 class StringResponseEncoder : ResponseEncoder<String> {
@@ -17,14 +19,14 @@ class StringResponseEncoder : ResponseEncoder<String> {
     ): EncodedResponse<String> {
         val functionReturnType = executedFunction.func.returnType
 
-        val encoder = controllerScope.provideJson()
+        val stringer = controllerScope.provideStringer()
 
         return when {
             functionReturnType.isSubtypeOf(typeOf<ResponseEntity<*>>()) -> {
                 val responseEntity = executedFunction.executedResult as ResponseEntity<Any>
 
-                val encodedValue = encoder.encodeToString(
-                    serializer = responseEntity.getEntitySerializer(),
+                val encodedValue = stringer.encodeToString(
+                    sourceType = responseEntity.getEntityKType(),
                     value = responseEntity.getEntity()
                 )
 
@@ -35,8 +37,8 @@ class StringResponseEncoder : ResponseEncoder<String> {
                 )
             }
             else -> {
-                val encodedValue = encoder.encodeToString(
-                    serializer = serializer(functionReturnType) as KSerializer<Any>,
+                val encodedValue = stringer.encodeToString(
+                    sourceType = functionReturnType,
                     value = executedFunction.executedResult as Any
                 )
 

@@ -1,14 +1,16 @@
-import com.strongmandrew.encoder.json.DefaultJsonProvider
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.Json
+import kotlin.reflect.KType
+import kotlin.reflect.full.createType
 import kotlin.test.assertEquals
 
-open class BaseApplicationTest {
+open class BaseJsonApplicationTest {
 
-    protected val jsonProvider = DefaultJsonProvider()
+    protected val json = Json
 
     protected suspend fun ApplicationTestBuilder.executeGet(
         route: String,
@@ -54,7 +56,7 @@ open class BaseApplicationTest {
         statusCode: HttpStatusCode,
         expectedBody: T
     ) {
-        val decodedBody = jsonProvider.provide().decodeFromString<T>(
+        val decodedBody = json.decodeFromString<T>(
             string = second
         )
 
@@ -79,5 +81,5 @@ open class BaseApplicationTest {
     protected fun <T> encodeToString(
         serializer: KSerializer<T>,
         value: T
-    ): String = jsonProvider.provide().encodeToString(serializer, value)
+    ): String = json.encodeToString(serializer, value)
 }

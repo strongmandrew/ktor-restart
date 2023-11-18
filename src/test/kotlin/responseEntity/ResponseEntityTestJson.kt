@@ -1,6 +1,6 @@
 package responseEntity
 
-import BaseApplicationTest
+import BaseJsonApplicationTest
 import com.strongmandrew.config.rootController
 import io.ktor.http.*
 import io.ktor.server.testing.*
@@ -8,7 +8,7 @@ import responseEntity.controller.ResponseEntityController
 import responseEntity.utils.*
 import kotlin.test.Test
 
-class ResponseEntityTest : BaseApplicationTest() {
+class ResponseEntityTestJson : BaseJsonApplicationTest() {
 
     @Test
     fun getOkStatusCode() = testApplicationWithResponseEntityController {

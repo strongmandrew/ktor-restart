@@ -1,15 +1,16 @@
 package headers
 
-import BaseApplicationTest
+import BaseJsonApplicationTest
 import com.strongmandrew.config.rootController
 import headers.controller.HeadersController
 import headers.utils.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import kotlin.reflect.typeOf
 import kotlin.test.Test
 
-class HeadersTest : BaseApplicationTest() {
+class HeadersTestJson : BaseJsonApplicationTest() {
 
     @Test
     fun getStringFromHeaders() = testApplicationWithHeaderController {

@@ -1,6 +1,6 @@
 package nestedControllerScope
 
-import BaseApplicationTest
+import BaseJsonApplicationTest
 import com.strongmandrew.config.rootController
 import io.ktor.server.testing.*
 import nestedControllerScope.controller.ApiController
@@ -8,7 +8,7 @@ import nestedControllerScope.controller.NestedTestController
 import nestedControllerScope.utils.*
 import kotlin.test.Test
 
-class NestedControllerScopeTest : BaseApplicationTest() {
+class NestedControllerScopeTestJson : BaseJsonApplicationTest() {
 
     @Test
     fun getLibraryTestName() = testApplicationWithNestedControllers {

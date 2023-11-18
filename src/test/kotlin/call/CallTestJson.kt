@@ -1,6 +1,6 @@
 package call
 
-import BaseApplicationTest
+import BaseJsonApplicationTest
 import call.controller.CallController
 import call.utils.customCallPath
 import call.utils.incorrectTypeCallPath
@@ -12,7 +12,7 @@ import io.ktor.server.testing.*
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-class CallTest : BaseApplicationTest() {
+class CallTestJson : BaseJsonApplicationTest() {
 
     @Test
     fun getCall() = testApplicationWithCallController {

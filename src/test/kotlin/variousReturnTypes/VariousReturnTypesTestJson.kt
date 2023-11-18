@@ -1,6 +1,6 @@
 package variousReturnTypes
 
-import BaseApplicationTest
+import BaseJsonApplicationTest
 import com.strongmandrew.config.rootController
 import com.strongmandrew.executor.exception.NullableReturnTypeException
 import io.ktor.server.testing.*
@@ -9,7 +9,7 @@ import variousReturnTypes.utils.*
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-class VariousReturnTypesTest : BaseApplicationTest() {
+class VariousReturnTypesTestJson : BaseJsonApplicationTest() {
 
     @Test
     fun returnString() = testApplicationWithVariousReturnTypesControllers {

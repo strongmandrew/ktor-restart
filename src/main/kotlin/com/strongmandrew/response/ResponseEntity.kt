@@ -4,6 +4,8 @@ import io.ktor.http.*
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
+import kotlin.reflect.KType
+import kotlin.reflect.full.createType
 
 class ResponseEntity<T : Any> {
 
@@ -32,13 +34,11 @@ class ResponseEntity<T : Any> {
 
     fun getEntity(): T = _entity
 
-    @OptIn(InternalSerializationApi::class)
-    fun getEntitySerializer(): KSerializer<Any> =
-        _entity::class.serializer() as KSerializer<Any>
-
     fun contentType(contentType: ContentType) {
         _contentType = contentType
     }
 
     fun getContentType(): ContentType = _contentType
+
+    fun getEntityKType(): KType = _entity::class.createType()
 }

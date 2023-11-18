@@ -1,16 +1,17 @@
 package queryParameters
 
-import BaseApplicationTest
+import BaseJsonApplicationTest
 import com.strongmandrew.config.rootController
 import com.strongmandrew.encoder.exception.FailedToDecodeException
 import com.strongmandrew.extractor.exception.CallElementNotFoundException
 import io.ktor.server.testing.*
 import queryParameters.controller.QueryParamController
 import queryParameters.utils.*
+import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
-class QueryParamsTest : BaseApplicationTest() {
+class QueryParamsTestJson : BaseJsonApplicationTest() {
 
     @Test
     fun getByQueryParam() = testApplicationWithQueryParamController {

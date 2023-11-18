@@ -22,7 +22,10 @@ data class ExtractedCallElement(
     fun decodeAsKParameterPair(): Pair<KParameter, Any?> =
         param to extractedValue?.let { value ->
             if (isSerializable) {
-                controllerScope.decodeKParameter(param, value)
+                controllerScope.provideStringer().decodeFromString(
+                    targetType = param.type,
+                    value = value.toString()
+                )
             } else {
                 value
             }

@@ -1,15 +1,11 @@
 package com.strongmandrew.config
 
-import com.strongmandrew.encoder.exception.FailedToDecodeException
-import com.strongmandrew.encoder.json.DefaultJsonProvider
-import com.strongmandrew.encoder.json.JsonProvider
+import com.strongmandrew.stringer.Stringer
+import com.strongmandrew.stringer.json.DefaultJsonStringer
 import com.strongmandrew.extractor.*
 import com.strongmandrew.handler.DefaultGetRouteHandler
 import com.strongmandrew.handler.RouteHandler
 import io.ktor.server.application.*
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.serializer
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.createInstance
@@ -31,7 +27,9 @@ class ControllerScope(
 
     val completePath: StringBuilder = StringBuilder("/")
 
-    private val jsonProviders: MutableList<JsonProvider> = mutableListOf(DefaultJsonProvider())
+    private val stringers: MutableList<Stringer> = mutableListOf(
+        DefaultJsonStringer()
+    )
 
     inline fun <reified T : Any> ControllerScope.createController(
         path: String = "",
@@ -59,7 +57,7 @@ class ControllerScope(
     fun findExtractor(parameter: KParameter): CallElementExtractor? = extractors.reversed()
         .find { extractor -> extractor.satisfies(parameter) }
 
-    fun provideJson(): Json = jsonProviders.reversed().first().provide()
+    fun provideStringer(): Stringer = stringers.reversed().first()
 
     fun addCustomHandler(
         validatorWithHandler: ControllerScope.() -> RouteHandler<*>,
@@ -71,20 +69,7 @@ class ControllerScope(
         extractors.add(extractorBlock.invoke(this))
     }
 
-    fun addCustomJsonProvider(
-        providerBlock: ControllerScope.() -> JsonProvider
-    ) {
-        jsonProviders.add(providerBlock.invoke(this))
-    }
-
-    fun decodeKParameter(parameter: KParameter, value: Any): Any? = try {
-        val serializer = serializer(parameter.type)
-
-        provideJson().decodeFromString(
-            deserializer = serializer,
-            string = value.toString()
-        )
-    } catch (e: SerializationException) {
-        throw FailedToDecodeException("Failed to decode $value into ${parameter.name} with type ${parameter.type}", e)
+    fun addCustomStringer(stringerBlock: ControllerScope.() -> Stringer) {
+        stringers.add(stringerBlock.invoke(this))
     }
 }
