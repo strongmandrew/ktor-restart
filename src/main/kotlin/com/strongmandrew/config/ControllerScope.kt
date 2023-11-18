@@ -25,11 +25,9 @@ class ControllerScope(
         DefaultCookieExtractor(this),
     )
 
-    val completePath: StringBuilder = StringBuilder("/")
+    val currentPath: StringBuilder = StringBuilder("/")
 
-    private val stringers: MutableList<Stringer> = mutableListOf(
-        DefaultJsonStringer()
-    )
+    private var stringer: Stringer = DefaultJsonStringer()
 
     inline fun <reified T : Any> ControllerScope.createController(
         path: String = "",
@@ -38,7 +36,7 @@ class ControllerScope(
         val instance = T::class.createInstance()
 
         val controllerWithParent = apply {
-            completePath.append("/$path")
+            currentPath.append("/$path")
             childControllersScope.invoke(this)
         }
 
@@ -57,7 +55,7 @@ class ControllerScope(
     fun findExtractor(parameter: KParameter): CallElementExtractor? = extractors.reversed()
         .find { extractor -> extractor.satisfies(parameter) }
 
-    fun provideStringer(): Stringer = stringers.reversed().first()
+    fun provideStringer(): Stringer = stringer
 
     fun addCustomHandler(
         validatorWithHandler: ControllerScope.() -> RouteHandler<*>,
@@ -69,7 +67,7 @@ class ControllerScope(
         extractors.add(extractorBlock.invoke(this))
     }
 
-    fun addCustomStringer(stringerBlock: ControllerScope.() -> Stringer) {
-        stringers.add(stringerBlock.invoke(this))
+    fun overrideStringer(stringerBlock: ControllerScope.() -> Stringer) {
+        stringer = stringerBlock.invoke(this)
     }
 }

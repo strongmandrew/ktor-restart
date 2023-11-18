@@ -29,7 +29,7 @@ class DefaultGetRouteHandler(
     override fun handle(controllerScope: ControllerScope, instance: Any, func: KFunction<*>) {
         controllerScope.application.routing {
 
-            val controllerPath = controllerScope.completePath.toString()
+            val controllerPath = controllerScope.currentPath.toString()
 
             route(controllerPath) {
                 /* guaranteed that invoked after satisfies returns true */
