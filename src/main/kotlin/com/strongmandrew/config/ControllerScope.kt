@@ -37,7 +37,7 @@ class ControllerScope(
 
         val controllerWithParent = apply {
             currentPath.append("/$path")
-            childControllersScope.invoke(this)
+            childControllersScope()
         }
 
         T::class.declaredMemberFunctions.forEach { func ->
@@ -60,14 +60,14 @@ class ControllerScope(
     fun addCustomHandler(
         validatorWithHandler: ControllerScope.() -> RouteHandler<*>,
     ) {
-        handlers.add(validatorWithHandler.invoke(this))
+        handlers.add(validatorWithHandler())
     }
 
     fun addCustomExtractor(extractorBlock: ControllerScope.() -> CallElementExtractor) {
-        extractors.add(extractorBlock.invoke(this))
+        extractors.add(extractorBlock())
     }
 
     fun overrideStringer(stringerBlock: ControllerScope.() -> Stringer) {
-        stringer = stringerBlock.invoke(this)
+        stringer = stringerBlock()
     }
 }
