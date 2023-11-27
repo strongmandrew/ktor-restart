@@ -1,6 +1,8 @@
 import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
@@ -30,6 +32,20 @@ open class BaseJsonApplicationTest {
         params.forEach { (key, value) ->
             parameter(key, value)
         }
+    }
+
+    protected suspend fun ApplicationTestBuilder.executeGetWithMultipartFormData(
+        route: String,
+        multipart: Map<String, String>
+    ): Pair<HttpStatusCode, String> = executeGet(route) {
+        val formData = formData {
+            multipart.forEach { (key, value) ->
+                append(key, value)
+            }
+        }
+        setBody(
+            body = MultiPartFormDataContent(formData)
+        )
     }
 
     protected suspend fun ApplicationTestBuilder.executePlainGet(route: String): Pair<HttpStatusCode, String> = executeGet(route)

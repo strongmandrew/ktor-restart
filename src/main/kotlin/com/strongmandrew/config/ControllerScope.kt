@@ -23,6 +23,7 @@ class ControllerScope(
         DefaultQueryParamExtractor(this),
         DefaultHeaderExtractor(this),
         DefaultCookieExtractor(this),
+        DefaultMultipartFormDataExtractor(this),
     )
 
     val currentPath: StringBuilder = StringBuilder("/")
